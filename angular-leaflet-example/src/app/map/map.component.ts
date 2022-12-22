@@ -87,12 +87,21 @@ export class MapComponent implements AfterViewInit {
 
       prodX[n] = 24.096980 + randomx * 3;
       prodY[n] = 90.555466 - randomy * 3;
-      const zooMarker = L.marker([24.096980 + randomx * 3, 90.555466 - randomy * 3], {
+      const zooMarker = L.marker([ prodX[n],  prodY[n]], {
         icon: markerIcon
       }).addTo(map);
 
+
+      var photoImg = '<img src="https://img.freepik.com/free-vector/factory-production-process-infographic_98292-4179.jpg" height="40px" width="40px"/>';
+
+      zooMarker.bindPopup( photoImg + "</br>" +"Consumer"+ "</br>" + "Production", {
+        closeButton: true
+      });
+
+      zooMarker.addTo(map);
     }
 
+  
     var locationX = [];
     var locationY = [];
     for (let n = 0; n <= 5; n++) {
@@ -103,17 +112,21 @@ export class MapComponent implements AfterViewInit {
       locationY[n] = 90.555466 - randomy * 3;
 
       
-      const zooMarker2 = L.marker([24.096980 + randomx * 3, 90.555466 - randomy * 3], {
+      const zooMarker2 = L.marker([locationX[n],locationY[n]], {
         icon: markerIconProd
       }).addTo(map);
+
+      
+      var photoImg = '<img src="  https://th.bing.com/th/id/R.8226e9a4d8532262c64e0ea70c06f21d?rik=446%2fzwM2coe54w&pid=ImgRaw&r=0  height="40px" width="40px"/>';
+
+      zooMarker2.bindPopup( photoImg + "</br>" +"Chemical"+ "</br>" + "Manufacturer", {
+        closeButton: true
+      });
+
+      zooMarker2.addTo(map);
       // create a red polygon from an array of LatLng points
     }
 
-    // var latlngs = [[(locationX[0] as Number), locationY[0] as Number], [(prodX[1] as Number), prodY[1] as Number]];
-    // var latlngYellow = [[(locationX[1] as Number), locationY[1] as Number], [(prodX[2] as Number), prodY[2] as Number]];
-
-
-    // var polygon = L.polygon(latlngs as [number, number][], { color: 'green' }).addTo(map);
 
     for (let i = 0; i <= 4; i++) {
 
@@ -140,17 +153,9 @@ export class MapComponent implements AfterViewInit {
         }).addTo(map);
   
       }
-  
-
     }
 
     tiles.addTo(map);
-
-
-
-
-    // zoom the map to the polygon
-
 
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

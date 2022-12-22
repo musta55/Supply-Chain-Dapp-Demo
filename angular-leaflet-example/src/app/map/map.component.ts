@@ -46,6 +46,38 @@ export class MapComponent implements AfterViewInit {
       popupAnchor: [0, -45] // point from which the popup should open relative to the iconAnchor
     });
 
+    const markerIconSup = L.icon({
+      iconUrl: ` https://api.geoapify.com/v1/icon/?type=material&color=red&icon=landmark&iconType=awesome&scaleFactor=2&apiKey=${myAPIKey}`,
+      iconSize: [31, 46], // size of the icon
+      iconAnchor: [15.5, 42], // point of the icon which will correspond to marker's location
+      popupAnchor: [0, -45] // point from which the popup should open relative to the iconAnchor
+    });
+
+
+
+    var supX = [];
+    var supY = [];
+    for (let n = 0; n <= 5; n++) {
+
+      var randomx = Math.floor(Math.random() * 10);
+      var randomy = Math.floor(Math.random() * 10);
+
+      supX[n] = 44.096980 + randomx * 3;
+      supY[n] = 60.555466 - randomy * 3;
+      const zooMarkerSup = L.marker( [supX[n], supY[n]], {
+        icon: markerIconSup
+      }).addTo(map);
+
+      var photoImg = '<img src="https://cdn.corporatefinanceinstitute.com/assets/Industry.jpeg" height="40px" width="40px"/>';
+
+      zooMarkerSup.bindPopup( photoImg + "</br>" +"Footware"+ "</br>" + "Supplier", {
+        closeButton: true
+      });
+
+      zooMarkerSup.addTo(map);
+
+    }
+
     var prodX = [];
     var prodY = [];
     for (let n = 0; n <= 5; n++) {
@@ -59,18 +91,6 @@ export class MapComponent implements AfterViewInit {
         icon: markerIcon
       }).addTo(map);
 
-      const fromWaypoint = [24.096980 + randomx * 3, 90.555466 - randomy * 3]; // latutude, longitude
-      const toWaypoint = [38.881152, -76.990693]; // latitude, longitude
-
-
-      const url = `https://api.geoapify.com/v1/routing?waypoints=${fromWaypoint.join(',')}|${toWaypoint.join(',')}&mode=drive&details=instruction_details&apiKey=${myAPIKey}`;
-
-      fetch(url).then(res => res.json()).then(result => {
-        console.log(result);
-      }, error => console.log("Error in routing"));
-
-
-
     }
 
     var locationX = [];
@@ -81,6 +101,8 @@ export class MapComponent implements AfterViewInit {
       var randomy = Math.floor(Math.random() * 3);
       locationX[n] = 24.096980 + randomx * 3;
       locationY[n] = 90.555466 - randomy * 3;
+
+      
       const zooMarker2 = L.marker([24.096980 + randomx * 3, 90.555466 - randomy * 3], {
         icon: markerIconProd
       }).addTo(map);
@@ -93,7 +115,7 @@ export class MapComponent implements AfterViewInit {
 
     // var polygon = L.polygon(latlngs as [number, number][], { color: 'green' }).addTo(map);
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i <= 4; i++) {
 
      
       if(i%2)
@@ -106,8 +128,13 @@ export class MapComponent implements AfterViewInit {
   
       else
       {
+        L.Polyline.Arc([supX[i], supY[i]], [prodX[i], prodY[i]], {
+          color: 'green',
+          vertices: 200
+        }).addTo(map);
 
-        L.Polyline.Arc([locationX[i], locationY[i]], [prodX[i], prodY[i]], {
+
+        L.Polyline.Arc([locationX[i], locationY[i]],[supX[i], supY[i]], {
           color: 'blue',
           vertices: 200
         }).addTo(map);
@@ -116,13 +143,6 @@ export class MapComponent implements AfterViewInit {
   
 
     }
-
-
-
-    // var polygon2 = L.polygon(latlngYellow as [number, number][], { color: 'blue' }).addTo(map);
-    // map.fitBounds(polygon.getBounds());
-
-
 
     tiles.addTo(map);
 
